@@ -10,13 +10,16 @@ def print_color_map():
             print(f'{i * 5 + j} | {major} | {minor}')
     return len(major_colors) * len(minor_colors)
 
-# Stub for the print_color_map function
+# Stub for the print_color_map function with an intentional mistake
 def stub_print_color_map():
     major_colors = ["White", "Red", "Black", "Yellow", "Violet"]
     minor_colors = ["Blue", "Orange", "Green", "Brown", "Slate"]
     output = ""
     for i, major in enumerate(major_colors):
         for j, minor in enumerate(minor_colors):
+            # Intentional mistake: change "Green" to "Grey" in the stub output
+            if minor == "Green":
+                minor = "Grey"  # This will cause a mismatch
             output += f'{i * 5 + j} | {major} | {minor}\n'
     return output, len(major_colors) * len(minor_colors)
 
