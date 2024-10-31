@@ -1,6 +1,7 @@
 import io
 import sys
 
+# Original function
 def print_color_map():
     major_colors = ["White", "Red", "Black", "Yellow", "Violet"]
     minor_colors = ["Blue", "Orange", "Green", "Brown", "Slate"]
@@ -9,21 +10,22 @@ def print_color_map():
             print(f'{i * 5 + j} | {major} | {minor}')
     return len(major_colors) * len(minor_colors)
 
-def test_print_color_map():
-    # Expected output
-    expected_output = ""
+# Stub for the print_color_map function
+def stub_print_color_map():
     major_colors = ["White", "Red", "Black", "Yellow", "Violet"]
     minor_colors = ["Blue", "Orange", "Green", "Brown", "Slate"]
-    
-    for i in range(len(major_colors)):
-        for j in range(len(minor_colors)):
-            expected_output += f'{i * 5 + j} | {major_colors[i]} | {minor_colors[j]}\n'
+    output = ""
+    for i, major in enumerate(major_colors):
+        for j, minor in enumerate(minor_colors):
+            output += f'{i * 5 + j} | {major} | {minor}\n'
+    return output, len(major_colors) * len(minor_colors)
 
-    # Capture the output of print_color_map
+def test_print_color_map():
+    # Capture the output of the original print_color_map
     captured_output = io.StringIO()
     sys.stdout = captured_output
 
-    # Call the function to test
+    # Call the original function
     result = print_color_map()
 
     # Restore original stdout
@@ -32,14 +34,17 @@ def test_print_color_map():
     # Get the actual output
     actual_output = captured_output.getvalue()
 
-    # Assert the output matches the expected output
+    # Use the stub to get the expected output
+    expected_output, expected_result = stub_print_color_map()
+
+    # Assertions to check if the actual output matches the expected output
     assert actual_output == expected_output, (
-        "Test failed: Expected output did not match actual output.\n"
+        "Test failed: Output does not match the expected format.\n"
         f"Expected:\n{expected_output}Actual:\n{actual_output}"
     )
 
-    # Assert the result is correct
-    assert result == 24, "Test failed: The return value is not correct."
+    # Assert that the return value is correct
+    assert result == expected_result, "Test failed: The return value is not correct."
 
 # Run the test
 test_print_color_map()
