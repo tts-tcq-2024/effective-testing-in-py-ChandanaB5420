@@ -1,41 +1,35 @@
-major_colors = ["White", "Red", "Black", "Yellow", "Violet"]
-minor_colors = ["Blue", "Orange", "Green", "Brown", "Slate"]
-
-def print_color_map():
-    for i in range(5):
-        for j in range(5):
-            pair_number = i * 5 + j
-            print(f"{pair_number:2} | {major_colors[i]:6} | {minor_colors[j]:6}")
-    return 25
+import io
+import sys
 
 def test_print_color_map():
-    from io import StringIO
-    import sys
+    # Expected output
+    expected_output = ""
+    major_colors = ["White", "Red", "Black", "Yellow", "Violet"]
+    minor_colors = ["Blue", "Orange", "Green", "Brown", "Slate"]
+    
+    for i in range(len(major_colors)):
+        for j in range(len(minor_colors)):
+            expected_output += f'{i * 5 + j} | {major_colors[i]} | {minor_colors[j]}\n'
 
     # Capture the output of print_color_map
-    actual_output = StringIO()
-    sys.stdout = actual_output
+    captured_output = io.StringIO()
+    sys.stdout = captured_output
 
-    print_color_map()
-    
-    sys.stdout = sys.__stdout__  # Restore original stdout
-
-    # Build the expected output
-    expected_output = ""
-    for i in range(5):
-        for j in range(5):
-            pair_number = i * 5 + j
-            expected_output += f"{pair_number:2} | {major_colors[i]:6} | {minor_colors[j]:6}\n"
-
-    # Test if the output matches the expected output
-    assert actual_output.getvalue() == expected_output, "Test failed: Output is not correctly aligned or mapped."
-
-def main():
+    # Call the function to test
     result = print_color_map()
-    assert result == 25
-    test_print_color_map()
-    print("All is well (maybe!)")
 
-if __name__ == "__main__":
-    main()
+    # Restore original stdout
+    sys.stdout = sys.__stdout__
 
+    # Get the actual output
+    actual_output = captured_output.getvalue()
+
+    # Assert the output matches the expected output
+    assert actual_output == expected_output, f"Test failed: Expected output did not match actual output.\nExpected:\n{expected_output}\nActual:\n{actual_output}"
+
+    # Assert the result is correct
+    assert result == 25, "Test failed: The return value is not correct."
+
+# Run the test
+test_print_color_map()
+print("All tests passed successfully!")
