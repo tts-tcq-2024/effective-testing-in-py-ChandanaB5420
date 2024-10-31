@@ -43,4 +43,4 @@ def test_print_color_map():
 
 # Run the test
 test_print_color_map()
-print("All tests passed successfully!"
+print("All tests passed successfully!")
