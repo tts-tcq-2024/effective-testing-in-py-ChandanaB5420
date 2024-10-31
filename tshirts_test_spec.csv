@@ -1,0 +1,7 @@
+﻿,,,,,
+Test Case ID,Test Scenario,Test Case Name,Test Description,Test Input,Expected Output
+TC001,Handling Size Small,test_sizeForSmall,The function should return 'S' for size small when input is less than 38 cm.,37,'S'
+TC002,Handling Size Medium,test_sizeForMedium,The function should return 'M' for size medium when input is between 38 cm and 42 cm.,40,'M'
+TC003,Handling Size Large,test_sizeForLarge,The function should return 'L' for size large when input is greater than 42 cm.,43,'L'
+TC004,Handling Edge Case Small,test_sizeForEdgeCaseSmall,The function should return 'S' for size small when input is exactly 38 cm.,38,'S'
+TC005,Handling Edge Case Medium,test_sizeForEdgeCaseMedium,The function should return 'M' for size medium when input is exactly 42 cm.,42,'M'

@@ -1,0 +1,4 @@
+﻿,,,,,
+Test Case ID,Test Scenario,Test Case Name,Test Description,Test Input,Expected Output
+TC001,Testing Color Map Printing,test_printColorMap,The function printColorMap should print 25 lines for color pairs. The mock printf should be called exactly 25 times.,N/A,25 calls to mock printf
+TC002,Validating Captured Output,test_validateCapturedOutput,"Ensure the output captured in the mock buffer contains the correct color pairs, including ""Blue"", ""Orange"", ""Green"", ""Brown"", and ""Slate"" at expected positions.",N/A,25 color pairs
