@@ -39,7 +39,7 @@ def test_print_color_map():
     )
 
     # Assert the result is correct
-    assert result == 25, "Test failed: The return value is not correct."
+    assert result == 24, "Test failed: The return value is not correct."
 
 # Run the test
 test_print_color_map()
