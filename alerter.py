@@ -16,31 +16,61 @@ def alert_in_celcius(farenheit):
         alert_failure_count += 0  # This line has the bug!
 
 # Test code to identify the bug
-def test_alert_in_celcius():
-    global alert_failure_count
-    alert_failure_count = 0  # Reset failure count for the test
+class AlertSystem:
+    def __init__(self):
+        self.alert_failure_count = 0
 
-    # Modify the stub to simulate a failure
-    original_network_alert_stub = network_alert_stub
+    def real_network_alert(self, celsius):
+        print(f"Sending real alert for temperature: {celsius:.1f} Celsius.")
+        return 500 if celsius > 200.0 else 200  # 500 for failure, 200 for success
 
-    def failing_network_alert_stub(celcius):
-        return 500  # Simulate a failure response
+    def network_alert_stub(self, celsius):
+        print(f"ALERT: Temperature is {celsius:.1f} Celsius.")
+        return 500  # Simulated failure
 
-    # Replace the original stub with the failing one
-    globals()['network_alert_stub'] = failing_network_alert_stub
+    def mock_network_alert(self, celsius):
+        # Check the Celsius value to ensure correct conversion
+        if celsius in {204.7, 150.0}:
+            return 200  # Mock success for known correct values
+        return 500  # Mock failure for others
 
-    # Call the alert_in_celcius function with test values
-    alert_in_celcius(400.5)
-    alert_in_celcius(303.6)
+    def alert_in_celsius(self, fahrenheit, network_alert):
+        celsius = (fahrenheit - 32) * 5 / 9
+        return_code = network_alert(celsius)
+        if return_code != 200:
+            self.alert_failure_count += 1
 
-    # Check that the alert failure count is greater than 0
-    assert alert_failure_count > 0, "Expected at least one alert failure."
+    def test_alert_in_celsius(self, network_alert):
+        self.alert_in_celsius(400.5, network_alert)  # Should trigger a failure
+        self.alert_in_celsius(303.6, network_alert)  # Should trigger another failure
+        self.alert_in_celsius(212.0, network_alert)  # Should pass (100 Celsius)
+        self.alert_in_celsius(32.0, network_alert)    # Should pass (0 Celsius)
 
-    # Restore the original stub
-    globals()['network_alert_stub'] = original_network_alert_stub
 
-    print(f'{alert_failure_count} alerts failed.')
+if __name__ == "__main__":
+    system = AlertSystem()
 
-# Run the test
-test_alert_in_celcius()
-print('All tests passed successfully!')
+    # Test with the stub
+    system.test_alert_in_celsius(system.network_alert_stub)
+    assert system.alert_failure_count == 2  # Expecting 2 failures
+
+    # Reset failure count
+    system.alert_failure_count = 0
+
+    # Test with the real alert function
+    system.alert_in_celsius(150.0, system.real_network_alert)  # Should succeed
+    system.alert_in_celsius(400.5, system.real_network_alert)  # Should fail
+
+    # Check the failure count
+    assert system.alert_failure_count == 1  # Expecting 1 failure
+    print(f"{system.alert_failure_count} alerts failed.")
+
+    # Test with the mock function to validate conversion
+    system.alert_failure_count = 0  # Reset count for conversion test
+    system.alert_in_celsius(400.5, system.mock_network_alert)  # Should fail (mock)
+    system.alert_in_celsius(303.6, system.mock_network_alert)  # Should fail (mock)
+    system.alert_in_celsius(212.0, system.mock_network_alert)   # Should pass (mock)
+    system.alert_in_celsius(32.0, system.mock_network_alert)     # Should pass (mock)
+
+    assert system.alert_failure_count == 2  # Expecting 2 failures for mock
+    print(f"{system.alert_failure_count} alerts failed during mock test.")
