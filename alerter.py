@@ -1,35 +1,39 @@
 alert_failure_count = 0
 
-def network_alert_stub(celsius):
-    print(f'ALERT: Temperature is {celsius} Celsius')
-    # Always return 200 for the stub (for testing purposes, we can modify this)
+def network_alert_stub(celcius):
+    print(f'ALERT: Temperature is {celcius} Celsius')
+    # Return 200 for ok
+    # Return 500 for not-ok
+    # stub always succeeds and returns 200
     return 200
 
-def alert_in_celsius(fahrenheit):
+def alert_in_celcius(farenheit):
     global alert_failure_count
-    celsius = (fahrenheit - 32) * 5 / 9
-    return_code = network_alert_stub(celsius)
-    if return_code != 200:
+    celcius = (farenheit - 32) * 5 / 9
+    returnCode = network_alert_stub(celcius)
+    if returnCode != 200:
         # Increment alert failure count on non-ok response
         alert_failure_count += 0  # This line has the bug!
 
-def test_alert_in_celsius():
+# Test code to identify the bug
+def test_alert_in_celcius():
     global alert_failure_count
-    alert_failure_count = 0  # Reset the failure count for the test
+    alert_failure_count = 0  # Reset failure count for the test
 
-    # Define a failing version of the network alert stub
-    def failing_network_alert_stub(celsius):
-        return 500  # Simulating a failure response
+    # Modify the stub to simulate a failure
+    original_network_alert_stub = network_alert_stub
+
+    def failing_network_alert_stub(celcius):
+        return 500  # Simulate a failure response
 
     # Replace the original stub with the failing one
-    original_network_alert_stub = network_alert_stub
     globals()['network_alert_stub'] = failing_network_alert_stub
 
-    # Call the alert function
-    alert_in_celsius(400.5)
-    alert_in_celsius(303.6)
+    # Call the alert_in_celcius function with test values
+    alert_in_celcius(400.5)
+    alert_in_celcius(303.6)
 
-    # Assert that the alert failure count is greater than 0
+    # Check that the alert failure count is greater than 0
     assert alert_failure_count > 0, "Expected at least one alert failure."
 
     # Restore the original stub
@@ -38,5 +42,5 @@ def test_alert_in_celsius():
     print(f'{alert_failure_count} alerts failed.')
 
 # Run the test
-test_alert_in_celsius()
+test_alert_in_celcius()
 print('All tests passed successfully!')
