@@ -1,6 +1,14 @@
 import io
 import sys
 
+def print_color_map():
+    major_colors = ["White", "Red", "Black", "Yellow", "Violet"]
+    minor_colors = ["Blue", "Orange", "Green", "Brown", "Slate"]
+    for i, major in enumerate(major_colors):
+        for j, minor in enumerate(minor_colors):
+            print(f'{i * 5 + j} | {major} | {minor}')
+    return len(major_colors) * len(minor_colors)
+
 def test_print_color_map():
     # Expected output
     expected_output = ""
@@ -25,7 +33,10 @@ def test_print_color_map():
     actual_output = captured_output.getvalue()
 
     # Assert the output matches the expected output
-    assert actual_output == expected_output, f"Test failed: Expected output did not match actual output.\nExpected:\n{expected_output}\nActual:\n{actual_output}"
+    assert actual_output == expected_output, (
+        "Test failed: Expected output did not match actual output.\n"
+        f"Expected:\n{expected_output}Actual:\n{actual_output}"
+    )
 
     # Assert the result is correct
     assert result == 25, "Test failed: The return value is not correct."
